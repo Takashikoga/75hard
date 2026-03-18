@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>75 HARD — Progress Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0e8;--paper:#faf7f2;--ink:#1a1410;--ink2:#3d3530;--muted:#8a7e74;--border:#ddd5c8;--taki:#1a5f8a;--jessica:#c2440e;--accent:#e8a020;--green:#2d7a4f;--red:#c2440e;--blue:#1a5f8a;--surface:#fff;--shadow:0 2px 12px rgba(26,20,16,0.08);--shadow-lg:0 8px 32px rgba(26,20,16,0.14);}
+.dark{--bg:#0a0a0f;--paper:#12121a;--ink:#f0f0f5;--ink2:#c0c0d0;--muted:#6b6b8a;--border:#2a2a3d;--surface:#12121a;--shadow:0 2px 12px rgba(0,0,0,0.3);--shadow-lg:0 8px 32px rgba(0,0,0,0.5);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(180,160,130,0.1) 28px);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;transition:background 0.3s,color 0.3s;}
+.dark body,body.dark{background-image:none;}
+
+header{background:var(--ink);color:var(--paper);padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-lg);}
+.header-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;flex-wrap:wrap;gap:8px;}
+.logo-main{font-family:'Playfair Display',serif;font-weight:900;font-size:20px;line-height:1;}
+.logo-sub{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-top:2px;}
+.header-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.person-toggle{display:flex;background:rgba(255,255,255,0.08);border-radius:8px;overflow:hidden;}
+.ptab{padding:6px 14px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:rgba(255,255,255,0.5);}
+.ptab.active.taki{background:var(--taki);color:white;}
+.ptab.active.jessica{background:var(--jessica);color:white;}
+.icon-btn-hdr{background:rgba(255,255,255,0.1);border:none;color:white;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+
+.nav-bar{max-width:900px;margin:0 auto;display:flex;gap:4px;padding-bottom:10px;overflow-x:auto;scrollbar-width:none;}
+.nav-bar::-webkit-scrollbar{display:none;}
+.chip{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);transition:all 0.2s;white-space:nowrap;}
+.chip.active{border-color:var(--accent);color:var(--accent);background:rgba(232,160,32,0.1);}
+
+.stats-bar{background:var(--paper);border-bottom:1px solid var(--border);}
+.stats-inner{max-width:900px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
+.stats-inner::-webkit-scrollbar{display:none;}
+.stat-item{flex:none;padding:10px 18px 8px;border-right:1px solid var(--border);text-align:center;min-width:76px;}
+.s-val{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;line-height:1;margin-bottom:2px;}
+.s-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+.main{max-width:900px;margin:0 auto;padding:20px 14px 60px;}
+
+.view-title{font-family:'Playfair Display',serif;font-weight:900;font-size:26px;letter-spacing:-0.5px;line-height:1.1;margin-bottom:4px;}
+.view-sub{font-size:12px;color:var(--muted);margin-bottom:18px;}
+
+/* PHOTO WALL */
+.photo-wall{columns:2;column-gap:8px;margin-bottom:24px;}
+@media(min-width:600px){.photo-wall{columns:3;}}
+@media(min-width:900px){.photo-wall{columns:4;}}
+.photo-brick{break-inside:avoid;margin-bottom:8px;position:relative;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);background:var(--border);cursor:pointer;}
+.photo-brick img{width:100%;display:block;transition:transform 0.3s ease;}
+.photo-brick:hover img{transform:scale(1.03);}
+.photo-brick-meta{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,20,16,0.8));padding:22px 8px 7px;color:white;}
+.photo-brick-day{font-family:'Playfair Display',serif;font-weight:700;font-size:14px;}
+.photo-brick-label{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:0.7;}
+.photo-empty{background:var(--paper);border:2px dashed var(--border);border-radius:12px;padding:40px 20px;text-align:center;color:var(--muted);font-size:14px;}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:36px;}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-day{position:relative;margin-bottom:22px;animation:fadeUp 0.3s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tl-dot{position:absolute;left:-29px;top:10px;width:18px;height:18px;border-radius:50%;border:3px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;}
+.tl-dot.complete{background:var(--green);}
+.tl-dot.partial{background:var(--accent);}
+.tl-dot.failed{background:var(--red);}
+.tl-dot.future{background:var(--border);}
+.day-card{background:var(--surface);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);}
+.day-card-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.day-num{font-family:'Playfair Display',serif;font-weight:900;font-size:22px;line-height:1;}
+.day-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.day-card-body{padding:12px 14px;display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:600px){.day-card-body{grid-template-columns:1fr 1fr;}}
+.block-title{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.check-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;}
+.check-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:white;}
+.check-dot.done{background:var(--green);}
+.check-dot.miss{background:var(--border);color:var(--muted);}
+.check-label.miss{color:var(--muted);text-decoration:line-through;}
+.water-viz{display:flex;gap:3px;align-items:flex-end;margin-top:3px;flex-wrap:wrap;}
+.water-bar{width:16px;border-radius:3px;background:var(--border);overflow:hidden;position:relative;}
+.water-bar-fill{position:absolute;bottom:0;left:0;right:0;background:#4cc9f0;}
+.meal-row{display:flex;align-items:baseline;gap:7px;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+.meal-row:last-child{border-bottom:none;}
+.meal-time-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:white;background:var(--accent);padding:2px 5px;border-radius:3px;flex-shrink:0;}
+.day-photos{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;}
+.day-photos::-webkit-scrollbar{display:none;}
+.day-photo-thumb{flex-shrink:0;width:80px;height:106px;border-radius:7px;object-fit:cover;cursor:pointer;box-shadow:var(--shadow);transition:transform 0.2s;}
+.day-photo-thumb:hover{transform:scale(1.05);}
+
+/* CHARTS */
+.chart-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px;}
+.chart-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:70px;overflow-x:auto;scrollbar-width:none;}
+.chart-bars::-webkit-scrollbar{display:none;}
+.chart-bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+.chart-bar{width:10px;border-radius:3px 3px 0 0;min-height:2px;}
+.chart-bar-label{font-size:7px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* BOOKS */
+.books-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+@media(min-width:600px){.books-grid{grid-template-columns:repeat(3,1fr);}}
+.book-entry{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+.book-cover{height:90px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.book-cover-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;font-weight:700;color:white;text-align:center;padding:10px;text-shadow:0 2px 8px rgba(0,0,0,0.4);line-height:1.3;}
+.book-meta{padding:10px;}
+.book-entry-title{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.3;}
+.book-entry-pages{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* STATS */
+.stats-full{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+@media(min-width:600px){.stats-full{grid-template-columns:repeat(3,1fr);}}
+.stats-big-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;box-shadow:var(--shadow);}
+.sbc-icon{font-size:22px;margin-bottom:7px;}
+.sbc-val{font-family:'Playfair Display',serif;font-weight:900;font-size:28px;line-height:1;margin-bottom:3px;}
+.sbc-lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* MOOD CHART */
+.mood-timeline{display:flex;align-items:flex-end;gap:4px;height:60px;overflow-x:auto;scrollbar-width:none;}
+.mood-timeline::-webkit-scrollbar{display:none;}
+.mood-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+.mood-bar{width:12px;border-radius:3px 3px 0 0;}
+.mood-day-lbl{font-size:7px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* BODY METRICS CHART */
+.metric-line-chart{position:relative;height:80px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:6px;}
+
+/* COMPARE */
+.compare-row-full{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.compare-name-lbl{font-size:11px;font-weight:600;width:60px;flex-shrink:0;}
+.compare-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.compare-track-fill{height:100%;border-radius:5px;transition:width 0.6s ease;}
+.compare-track-val{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;width:40px;text-align:right;flex-shrink:0;}
+
+/* BADGES */
+.badges-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+.badge-showcase-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;}
+.badge-showcase-item.earned{border-color:var(--accent);}
+.badge-showcase-item.locked{opacity:0.4;}
+.badge-emoji-lg{font-size:28px;margin-bottom:5px;}
+.badge-name-lg{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;}
+.badge-desc-lg{font-size:10px;color:var(--muted);}
+.badge-earned-mark{font-size:11px;color:var(--accent);font-weight:700;}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(26,20,16,0.95);z-index:300;display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn 0.2s ease;}
+.lightbox.hidden{display:none;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lightbox img{max-width:100%;max-height:85vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;}
+.lightbox-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:white;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lightbox-caption{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(26,20,16,0.8);color:white;padding:7px 18px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:1px;white-space:nowrap;}
+
+/* SECTION LABEL */
+.section-lbl{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="logo-main">75 HARD</div>
+      <div class="logo-sub">Progress Journal</div>
+    </div>
+    <div class="header-controls">
+      <div class="person-toggle">
+        <div class="ptab taki active" onclick="switchPerson('taki')">Taki</div>
+        <div class="ptab jessica" onclick="switchPerson('jessica')">Jessica</div>
+      </div>
+      <button class="icon-btn-hdr" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <div class="chip active" onclick="switchView('photos')">📸 Photos</div>
+    <div class="chip" onclick="switchView('timeline')">📋 Timeline</div>
+    <div class="chip" onclick="switchView('meals')">🍽️ Meals</div>
+    <div class="chip" onclick="switchView('books')">📚 Books</div>
+    <div class="chip" onclick="switchView('body')">📏 Body</div>
+    <div class="chip" onclick="switchView('mood')">😊 Mood</div>
+    <div class="chip" onclick="switchView('badges')">🏅 Badges</div>
+    <div class="chip" onclick="switchView('stats')">📊 Stats</div>
+  </div>
+</header>
+
+<div class="stats-bar"><div class="stats-inner" id="statsBar"></div></div>
+<div class="main" id="mainContent"></div>
+
+<div class="lightbox hidden" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<script>
+// ─── DATA — localStorage first, Firebase syncs in background ───
+const THEME_KEY='75hard_theme';
+
+function getMeta(p){const c=localStorage.getItem(`75hard_meta_${p}`);return c?JSON.parse(c):{startDate:null,currentDay:1,restarts:0};}
+function getDayData(p,d){const c=localStorage.getItem(`75hard_${p}_day${d}`);return c?JSON.parse(c):{diet:false,workout1:false,workout1Note:'',workout2:false,workout2Note:'',water:0,pages:0,book:'',photo1:null,photo2:null,photo3:null,meals:[],notes:'',mood:0,weight:'',waist:'',sleep:'',calories:'',protein:'',carbs:'',fat:''};}
+
+// ─── FIREBASE — async, never blocks UI ───
+async function initJournalFirebase(){
+  try{
+    const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const {getFirestore,doc,getDoc,onSnapshot}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const firebaseConfig={
+      apiKey:"AIzaSyDfk8msl0bS3Gi517pDIRmanf4UJVVXvms",
+      authDomain:"hard-6333f.firebaseapp.com",
+      projectId:"hard-6333f",
+      storageBucket:"hard-6333f.firebasestorage.app",
+      messagingSenderId:"1098049066413",
+      appId:"1:1098049066413:web:439d8a3aea0a6c60b67d24"
+    };
+    const app=initializeApp(firebaseConfig);
+    const db=getFirestore(app);
+
+    // Pull all data
+    for(const p of['taki','jessica']){
+      const ms=await getDoc(doc(db,'75hard',`meta_${p}`));
+      if(ms.exists())localStorage.setItem(`75hard_meta_${p}`,JSON.stringify(ms.data()));
+      const dn=getTodayDay(p);
+      for(let d=1;d<=Math.min(dn+1,75);d++){
+        const s=await getDoc(doc(db,'75hard',`${p}_day${d}`));
+        if(s.exists()){
+          const remote=s.data();
+          const localRaw=localStorage.getItem(`75hard_${p}_day${d}`);
+          const local=localRaw?JSON.parse(localRaw):{};
+          localStorage.setItem(`75hard_${p}_day${d}`,JSON.stringify({...local,...remote,photo1:local.photo1||null,photo2:local.photo2||null,photo3:local.photo3||null}));
+        }
+      }
+    }
+    renderStatsBar();renderView();
+
+    // Live listeners
+    ['taki','jessica'].forEach(p=>{
+      onSnapshot(doc(db,'75hard',`meta_${p}`),snap=>{
+        if(!snap.exists())return;
+        localStorage.setItem(`75hard_meta_${p}`,JSON.stringify(snap.data()));
+        renderStatsBar();if(p===activePerson)renderView();
+      });
+      const dn=getTodayDay(p);
+      for(let d=Math.max(1,dn-1);d<=Math.min(dn+1,75);d++){
+        onSnapshot(doc(db,'75hard',`${p}_day${d}`),snap=>{
+          if(!snap.exists())return;
+          const remote=snap.data();
+          const localRaw=localStorage.getItem(`75hard_${p}_day${d}`);
+          const local=localRaw?JSON.parse(localRaw):{};
+          localStorage.setItem(`75hard_${p}_day${d}`,JSON.stringify({...local,...remote,photo1:local.photo1||null,photo2:local.photo2||null,photo3:local.photo3||null}));
+          renderStatsBar();if(p===activePerson)renderView();
+        });
+      }
+    });
+  }catch(e){console.warn('Journal Firebase err:',e);}
+}
+function getTodayDay(p){const m=getMeta(p);if(!m.startDate)return 1;const s=new Date(m.startDate),t=new Date();s.setHours(0,0,0,0);t.setHours(0,0,0,0);return Math.min(Math.max(Math.floor((t-s)/86400000)+1,1),75);}
+function formatDate(d,p){const m=getMeta(p);if(!m.startDate)return '';const dt=new Date(m.startDate);dt.setDate(dt.getDate()+d-1);return dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function isDayComplete(d){return d.diet&&d.workout1&&d.workout2&&d.water>=8&&d.pages>=10&&d.photo1;}
+function isDayPartial(d){return [d.diet,d.workout1,d.workout2,d.water>=8,d.pages>=10,d.photo1].some(Boolean);}
+function dayStatus(d){return isDayComplete(d)?'complete':isDayPartial(d)?'partial':'failed';}
+
+// ─── BADGES (shared) ───
+const ALL_BADGES=[
+  {id:'day1',emoji:'🚀',name:'Day One',desc:'Started the challenge'},
+  {id:'week1',emoji:'📅',name:'First Week',desc:'7 days complete'},
+  {id:'perfect3',emoji:'⚡',name:'Hat Trick',desc:'3 perfect days in a row'},
+  {id:'gallon7',emoji:'💧',name:'Hydrated',desc:'Gallon 7 days straight'},
+  {id:'reader',emoji:'📚',name:'Bookworm',desc:'100+ pages total'},
+  {id:'halfway',emoji:'🔱',name:'Halfway',desc:'Reached Day 45'},
+  {id:'norestart',emoji:'🛡️',name:'Iron Will',desc:'Zero restarts'},
+  {id:'photographer',emoji:'📸',name:'Documented',desc:'Photos on 10 days'},
+  {id:'complete75',emoji:'🏆',name:'75 HARD',desc:'Challenge complete!'},
+  {id:'early',emoji:'🌅',name:'Up & At Em',desc:'10 perfect days'},
+  {id:'warrior',emoji:'⚔️',name:'Warrior',desc:'30 perfect days'},
+  {id:'legend',emoji:'👑',name:'Legend',desc:'60 perfect days'},
+];
+
+function getCompleteDays(p){const dn=getTodayDay(p);let c=0;for(let d=1;d<dn;d++){if(isDayComplete(getDayData(p,d)))c++;}return c;}
+function getStreak(p){const dn=getTodayDay(p);let best=0,cur=0;for(let d=1;d<dn;d++){if(isDayComplete(getDayData(p,d))){cur++;best=Math.max(best,cur);}else cur=0;}return best;}
+function getCurStreak(p){const dn=getTodayDay(p);let cur=0;for(let d=dn-1;d>=1;d--){if(isDayComplete(getDayData(p,d)))cur++;else break;}return cur;}
+function getTotalPages(p){const dn=getTodayDay(p);let t=0;for(let d=1;d<dn;d++)t+=getDayData(p,d).pages||0;return t;}
+function getPhotoDays(p){const dn=getTodayDay(p);let c=0;for(let d=1;d<dn;d++){if(getDayData(p,d).photo1)c++;}return c;}
+function getWaterStreak(p){const dn=getTodayDay(p);let best=0,cur=0;for(let d=1;d<dn;d++){if((getDayData(p,d).water||0)>=8){cur++;best=Math.max(best,cur);}else cur=0;}return best;}
+function checkBadge(p,id){
+  const dn=getTodayDay(p),m=getMeta(p);
+  if(id==='day1')return m.startDate!=null;
+  if(id==='week1')return getStreak(p)>=7||getCompleteDays(p)>=7;
+  if(id==='perfect3')return getCurStreak(p)>=3||getStreak(p)>=3;
+  if(id==='gallon7')return getWaterStreak(p)>=7;
+  if(id==='reader')return getTotalPages(p)>=100;
+  if(id==='halfway')return m.startDate&&dn>=45;
+  if(id==='norestart')return (m.restarts||0)===0;
+  if(id==='photographer')return getPhotoDays(p)>=10;
+  if(id==='complete75')return getCompleteDays(p)>=75;
+  if(id==='early')return getCompleteDays(p)>=10;
+  if(id==='warrior')return getCompleteDays(p)>=30;
+  if(id==='legend')return getCompleteDays(p)>=60;
+  return false;
+}
+
+// ─── STATE ───
+let activePerson='taki', activeView='photos';
+
+function switchPerson(p){activePerson=p;document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));document.querySelector(`.ptab.${p}`).classList.add('active');renderStatsBar();renderView();}
+function switchView(v){activeView=v;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));const views=['photos','timeline','meals','books','body','mood','badges','stats'];document.querySelectorAll('.chip')[views.indexOf(v)].classList.add('active');renderView();}
+function renderView(){
+  const c=document.getElementById('mainContent');
+  if(activeView==='photos')renderPhotos(c);
+  else if(activeView==='timeline')renderTimeline(c);
+  else if(activeView==='meals')renderMeals(c);
+  else if(activeView==='books')renderBooks(c);
+  else if(activeView==='body')renderBody(c);
+  else if(activeView==='mood')renderMood(c);
+  else if(activeView==='badges')renderBadges(c);
+  else if(activeView==='stats')renderStats(c);
+}
+
+// ─── THEME ───
+function toggleTheme(){document.body.classList.toggle('dark');const dk=document.body.classList.contains('dark');localStorage.setItem(THEME_KEY,dk?'dark':'light');document.getElementById('themeBtn').textContent=dk?'☀️':'🌙';}
+function initTheme(){if(localStorage.getItem(THEME_KEY)==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️';}}
+
+// ─── STATS BAR ───
+function renderStatsBar(){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  let complete=0,water=0,pages=0,streak=0,s=0;
+  for(let d=1;d<dn;d++){const dd=getDayData(activePerson,d);if(isDayComplete(dd)){complete++;s++;streak=Math.max(streak,s);}else s=0;water+=dd.water||0;pages+=dd.pages||0;}
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  document.getElementById('statsBar').innerHTML=`
+    <div class="stat-item"><div class="s-val" style="color:${color}">${meta.startDate?dn:'—'}</div><div class="s-lbl">Day</div></div>
+    <div class="stat-item"><div class="s-val" style="color:#2d7a4f">${complete}</div><div class="s-lbl">Perfect</div></div>
+    <div class="stat-item"><div class="s-val" style="color:#e8a020">${streak}🔥</div><div class="s-lbl">Streak</div></div>
+    <div class="stat-item"><div class="s-val" style="color:#1a5f8a">${water}</div><div class="s-lbl">Cups</div></div>
+    <div class="stat-item"><div class="s-val" style="color:#3d3530">${pages}</div><div class="s-lbl">Pages</div></div>
+    <div class="stat-item"><div class="s-val" style="color:#c2440e">${meta.restarts||0}</div><div class="s-lbl">Restarts</div></div>`;
+}
+
+// ─── PHOTOS ───
+function renderPhotos(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  let photos=[];
+  for(let d=1;d<=dn;d++){const dd=getDayData(activePerson,d);if(dd.photo1)photos.push({day:d,src:dd.photo1,label:'Body',date:formatDate(d,activePerson)});if(dd.photo2)photos.push({day:d,src:dd.photo2,label:'Meal',date:formatDate(d,activePerson)});if(dd.photo3)photos.push({day:d,src:dd.photo3,label:'Extra',date:formatDate(d,activePerson)});}
+  if(!meta.startDate||photos.length===0){c.innerHTML=`<div class="view-title" style="color:${color}">${name}'s Photos</div><div class="view-sub">Progress and meal photos</div><div style="text-align:center;padding:50px 20px;color:var(--muted);"><div style="font-size:44px;margin-bottom:12px;">📸</div><div>No photos yet. Add them daily in the tracker.</div></div>`;return;}
+  const body=photos.filter(p=>p.label==='Body');
+  const other=photos.filter(p=>p.label!=='Body');
+  let html=`<div class="view-title" style="color:${color}">${name}'s Photos</div><div class="view-sub">${photos.length} photos · ${dn} days</div>`;
+  if(body.length){html+=`<div class="section-lbl">PROGRESS SHOTS — BODY</div><div class="photo-wall">${body.map(p=>`<div class="photo-brick" onclick="openLightbox('${p.src}','Day ${p.day} · ${p.date}')"><img src="${p.src}" loading="lazy"><div class="photo-brick-meta"><div class="photo-brick-day">Day ${p.day}</div><div class="photo-brick-label">${p.date}</div></div></div>`).join('')}</div>`;}
+  if(other.length){html+=`<div class="section-lbl" style="margin-top:16px;">MEAL & OTHER PHOTOS</div><div class="photo-wall">${other.map(p=>`<div class="photo-brick" onclick="openLightbox('${p.src}','Day ${p.day} — ${p.label} · ${p.date}')"><img src="${p.src}" loading="lazy"><div class="photo-brick-meta"><div class="photo-brick-day">Day ${p.day} · ${p.label}</div><div class="photo-brick-label">${p.date}</div></div></div>`).join('')}</div>`;}
+  c.innerHTML=html;
+}
+
+// ─── TIMELINE ───
+function renderTimeline(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  const bookColors=['#c2440e','#1a5f8a','#2d7a4f','#7b3fa0','#e8a020','#1a3a2a'];
+  const moodEmoji=['','😩','😕','😐','🙂','🔥'];
+  if(!meta.startDate){c.innerHTML=`<div style="text-align:center;padding:50px 20px;color:var(--muted);">Start the challenge to see your timeline.</div>`;return;}
+  let html=`<div class="view-title" style="color:${color}">${name}'s Journey</div><div class="view-sub">Day by day — every detail</div><div class="timeline">`;
+  for(let d=dn;d>=1;d--){
+    const dd=getDayData(activePerson,d);
+    const status=d<dn?dayStatus(dd):'future';
+    const tasks=[{n:'Diet',ok:dd.diet},{n:'WO1',ok:dd.workout1},{n:'WO2',ok:dd.workout2},{n:'Water',ok:dd.water>=8},{n:'Read',ok:dd.pages>=10},{n:'Photo',ok:!!dd.photo1}];
+    const photos=[dd.photo1,dd.photo2,dd.photo3].filter(Boolean);
+    const bColor=bookColors[(dd.book||'').length%bookColors.length];
+    html+=`<div class="tl-day" style="animation-delay:${Math.min((dn-d)*0.02,0.4)}s">
+      <div class="tl-dot ${status}">${status==='complete'?'✓':status==='partial'?'·':status==='failed'?'✗':''}</div>
+      <div class="day-card">
+        <div class="day-card-header">
+          <div>
+            <div class="day-num">Day ${d}</div>
+            <div class="day-label">${formatDate(d,activePerson)}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="display:flex;gap:3px;justify-content:flex-end;margin-bottom:3px;">${tasks.map(t=>`<div style="width:7px;height:7px;border-radius:50%;background:${t.ok?'#2d7a4f':'var(--border)'};"></div>`).join('')}</div>
+            <div style="font-size:9px;font-weight:700;letter-spacing:1px;color:${status==='complete'?'#2d7a4f':status==='partial'?'#e8a020':'#c2440e'};">${status.toUpperCase()}</div>
+            ${dd.mood?`<div style="font-size:14px;">${moodEmoji[dd.mood]}</div>`:''}
+          </div>
+        </div>
+        <div class="day-card-body">
+          <div>
+            <div class="block-title">Daily Tasks</div>
+            <div class="check-grid">${[
+              {icon:'🥗',n:'Diet',ok:dd.diet},
+              {icon:'💪',n:dd.workout1Note||'Workout 1',ok:dd.workout1},
+              {icon:'🌤️',n:dd.workout2Note||'Workout 2',ok:dd.workout2},
+              {icon:'💧',n:`Water (${dd.water}/8)`,ok:dd.water>=8},
+              {icon:'📖',n:`${dd.pages} pages`,ok:dd.pages>=10},
+              {icon:'📸',n:'Photo',ok:!!dd.photo1}
+            ].map(t=>`<div class="check-item"><div class="check-dot ${t.ok?'done':'miss'}">${t.ok?'✓':'✗'}</div><span class="check-label ${t.ok?'':'miss'}">${t.icon} ${t.n}</span></div>`).join('')}</div>
+            ${dd.weight?`<div style="margin-top:8px;font-size:11px;color:var(--muted);">⚖️ ${dd.weight} lbs${dd.waist?' · 📏 '+dd.waist+'"':''}${dd.sleep?' · 😴 '+dd.sleep+'h':''}</div>`:''}
+            ${dd.calories?`<div style="font-size:11px;color:var(--muted);">🔥 ${dd.calories} kcal · 🥩 ${dd.protein||'?'}g pro</div>`:''}
+          </div>
+          <div>
+            <div class="block-title">Water</div>
+            <div class="water-viz">${Array.from({length:8},(_,i)=>`<div class="water-bar" style="height:${26+i*3}px"><div class="water-bar-fill" style="height:${i<dd.water?100:0}%"></div></div>`).join('')}</div>
+            <div style="font-size:11px;font-weight:600;color:#1a5f8a;margin-top:5px;">${dd.water}/8 cups ${dd.water>=8?'✓':''}</div>
+          </div>
+          ${dd.meals&&dd.meals.length?`<div><div class="block-title">Meals (${dd.meals.length})</div>${dd.meals.map(m=>`<div class="meal-row"><span class="meal-time-tag">${m.time}</span><span style="font-size:12px;color:var(--ink2);">${m.desc}</span></div>`).join('')}</div>`:''}
+          ${dd.book?`<div><div class="block-title">Reading</div><div style="display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:8px;padding:8px 10px;"><div style="width:6px;height:40px;border-radius:2px;background:${bColor};flex-shrink:0;"></div><div><div style="font-size:12px;font-weight:600;">${dd.book}</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">${dd.pages} pages ${dd.pages>=10?'✓':''}</div></div></div></div>`:''}
+          ${photos.length?`<div style="grid-column:1/-1;"><div class="block-title">Photos</div><div class="day-photos">${photos.map((src,i)=>`<img class="day-photo-thumb" src="${src}" loading="lazy" onclick="openLightbox('${src}','Day ${d} — ${['Body','Meal','Extra'][i]}')">`).join('')}</div></div>`:''}
+          ${dd.notes?`<div style="grid-column:1/-1;"><div class="block-title">Notes</div><div style="font-size:12px;color:var(--ink2);font-style:italic;line-height:1.5;">"${dd.notes}"</div></div>`:''}
+        </div>
+      </div>
+    </div>`;
+  }
+  c.innerHTML=html+'</div><div style="height:40px;"></div>';
+}
+
+// ─── MEALS ───
+function renderMeals(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  let allMeals=[],mealCounts={};
+  for(let d=1;d<=dn;d++){const dd=getDayData(activePerson,d);if(dd.meals)dd.meals.forEach(m=>{allMeals.push({day:d,date:formatDate(d,activePerson),...m});mealCounts[m.time]=(mealCounts[m.time]||0)+1;});}
+  if(!meta.startDate||allMeals.length===0){c.innerHTML=`<div class="view-title" style="color:${color}">${name}'s Meals</div><div style="text-align:center;padding:50px 20px;color:var(--muted);"><div style="font-size:44px;margin-bottom:12px;">🍽️</div>No meals logged yet.</div>`;return;}
+  const mealColors={Breakfast:'#e8a020',Lunch:'#2d7a4f',Dinner:'#1a5f8a',Snack:'#c2440e','Pre-WO':'#7b3fa0','Post-WO':'#1a3a2a'};
+  let byDay={};
+  allMeals.forEach(m=>{if(!byDay[m.day])byDay[m.day]=[];byDay[m.day].push(m);});
+  let html=`<div class="view-title" style="color:${color}">${name}'s Meals</div><div class="view-sub">${allMeals.length} meals across ${dn} days</div>
+  <div class="chart-section" style="margin-bottom:18px;">
+    <div class="chart-title">Meals by Type</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;">${Object.entries(mealCounts).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<div style="background:${mealColors[t]||'#8a7e74'}18;border:1.5px solid ${mealColors[t]||'#8a7e74'}40;border-radius:8px;padding:7px 10px;"><div style="font-size:15px;font-weight:700;color:${mealColors[t]||'#8a7e74'}">${n}</div><div style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">${t}</div></div>`).join('')}</div>
+  </div>`;
+  Object.keys(byDay).sort((a,b)=>b-a).forEach(d=>{
+    const meals=byDay[d];
+    html+=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px;box-shadow:var(--shadow);">
+      <div style="padding:9px 12px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:15px;">Day ${d}</div>
+        <div style="font-size:10px;color:var(--muted);">${formatDate(parseInt(d),activePerson)} · ${meals.length} meals</div>
+      </div>
+      <div>${meals.map(m=>`<div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);"><span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:white;background:${mealColors[m.time]||'#8a7e74'};padding:2px 6px;border-radius:3px;flex-shrink:0;">${m.time}</span><span style="font-size:12px;color:var(--ink2);">${m.desc}</span></div>`).join('')}</div>
+    </div>`;
+  });
+  c.innerHTML=html+'<div style="height:40px;"></div>';
+}
+
+// ─── BOOKS ───
+function renderBooks(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  const spineColors=['#c2440e','#1a5f8a','#2d7a4f','#7b3fa0','#e8a020','#1a3a2a','#c26a0e','#0e7a7a'];
+  let books={};let totalPages=0;
+  for(let d=1;d<=dn;d++){const dd=getDayData(activePerson,d);if(dd.book){if(!books[dd.book])books[dd.book]={title:dd.book,totalPages:0,days:[]};books[dd.book].totalPages+=dd.pages||0;books[dd.book].days.push(d);totalPages+=dd.pages||0;}}
+  const bookList=Object.values(books);
+  if(!meta.startDate||bookList.length===0){c.innerHTML=`<div class="view-title" style="color:${color}">${name}'s Reading</div><div style="text-align:center;padding:50px 20px;color:var(--muted);"><div style="font-size:44px;margin-bottom:12px;">📚</div>No books logged yet.</div>`;return;}
+  let pageDays=[];for(let d=1;d<dn;d++){const dd=getDayData(activePerson,d);pageDays.push({d,pages:dd.pages||0,hit:dd.pages>=10});}
+  const maxP=Math.max(...pageDays.map(p=>p.pages),10);
+  let html=`<div class="view-title" style="color:${color}">${name}'s Reading</div><div class="view-sub">${bookList.length} book${bookList.length!==1?'s':''} · ${totalPages} total pages</div>
+  <div class="books-grid">${bookList.map((b,i)=>`<div class="book-entry"><div class="book-cover" style="background:${spineColors[i%spineColors.length]};"><div class="book-cover-text">${b.title}</div></div><div class="book-meta"><div class="book-entry-title">${b.title}</div><div class="book-entry-pages">${b.totalPages} pages · ${b.days.length} days</div></div></div>`).join('')}</div>
+  <div class="chart-section"><div class="chart-title">Pages Per Day</div>
+    <div class="chart-bars">${pageDays.map(p=>`<div class="chart-bar-col"><div class="chart-bar" style="height:${Math.max(p.pages/maxP*65,2)}px;background:${p.hit?'#2d7a4f':'#c2440e'};"></div><div class="chart-bar-label">${p.d}</div></div>`).join('')}</div>
+    <div style="display:flex;gap:14px;margin-top:8px;font-size:10px;font-weight:600;color:var(--muted);">
+      <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#2d7a4f;"></span>10+ pages ✓</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#c2440e;"></span>Under 10</span>
+    </div>
+  </div>`;
+  c.innerHTML=html+'<div style="height:40px;"></div>';
+}
+
+// ─── BODY METRICS ───
+function renderBody(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  let weights=[],waists=[],sleeps=[];
+  for(let d=1;d<dn;d++){const dd=getDayData(activePerson,d);if(dd.weight)weights.push({d,v:parseFloat(dd.weight)});if(dd.waist)waists.push({d,v:parseFloat(dd.waist)});if(dd.sleep)sleeps.push({d,v:parseFloat(dd.sleep)});}
+  if(!meta.startDate||weights.length===0){c.innerHTML=`<div class="view-title" style="color:${color}">${name}'s Body</div><div style="text-align:center;padding:50px 20px;color:var(--muted);"><div style="font-size:44px;margin-bottom:12px;">📏</div>No body metrics logged yet.<br>Enter weight, waist, and sleep in the daily tracker.</div>`;return;}
+  const firstW=weights[0]?.v,lastW=weights[weights.length-1]?.v;
+  const changeW=lastW&&firstW?(lastW-firstW).toFixed(1):null;
+  const maxW=Math.max(...weights.map(w=>w.v));const minW=Math.min(...weights.map(w=>w.v));
+  const maxWaist=waists.length?Math.max(...waists.map(w=>w.v)):0;
+  const minWaist=waists.length?Math.min(...waists.map(w=>w.v)):0;
+  let html=`<div class="view-title" style="color:${color}">${name}'s Body</div><div class="view-sub">Weight, measurements & sleep over ${dn} days</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+    <div class="stats-big-card"><div class="sbc-icon">⚖️</div><div class="sbc-val" style="color:${color}">${lastW||'—'}</div><div class="sbc-lbl">Latest (lbs)</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">${changeW&&parseFloat(changeW)<0?'📉':'📈'}</div><div class="sbc-val" style="color:${changeW&&parseFloat(changeW)<0?'#2d7a4f':'#c2440e'}">${changeW?`${parseFloat(changeW)>0?'+':''}${changeW}`:'—'}</div><div class="sbc-lbl">Change (lbs)</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">📏</div><div class="sbc-val" style="color:${color}">${waists.length?waists[waists.length-1].v+'"':'—'}</div><div class="sbc-lbl">Waist</div></div>
+  </div>`;
+  if(weights.length>1){
+    const range=maxW-minW||1;
+    html+=`<div class="chart-section"><div class="chart-title">Weight Over Time (lbs)</div>
+      <div style="position:relative;height:80px;background:var(--bg);border-radius:8px;overflow:hidden;">
+        <svg width="100%" height="80" viewBox="0 0 ${Math.max(weights.length*16,300)} 80" preserveAspectRatio="none">
+          <polyline fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            points="${weights.map((w,i)=>`${i*16+8},${70-(w.v-minW)/range*60}`).join(' ')}"/>
+          ${weights.map((w,i)=>`<circle cx="${i*16+8}" cy="${70-(w.v-minW)/range*60}" r="3" fill="${color}"/>`).join('')}
+        </svg>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted);">
+        <span>Day ${weights[0].d}: ${weights[0].v} lbs</span><span>Day ${weights[weights.length-1].d}: ${weights[weights.length-1].v} lbs</span>
+      </div>
+    </div>`;
+  }
+  if(waists.length>1){
+    const wr=maxWaist-minWaist||1;
+    html+=`<div class="chart-section"><div class="chart-title">Waist Measurement (inches)</div>
+      <div style="position:relative;height:80px;background:var(--bg);border-radius:8px;overflow:hidden;">
+        <svg width="100%" height="80" viewBox="0 0 ${Math.max(waists.length*16,300)} 80" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            points="${waists.map((w,i)=>`${i*16+8},${70-(w.v-minWaist)/wr*60}`).join(' ')}"/>
+          ${waists.map((w,i)=>`<circle cx="${i*16+8}" cy="${70-(w.v-minWaist)/wr*60}" r="3" fill="#2d7a4f"/>`).join('')}
+        </svg>
+      </div>
+    </div>`;
+  }
+  if(sleeps.length>0){
+    const maxSleep=Math.max(...sleeps.map(s=>s.v),8);
+    html+=`<div class="chart-section"><div class="chart-title">Sleep Per Night (hours)</div>
+      <div class="chart-bars">${sleeps.map(s=>`<div class="chart-bar-col"><div class="chart-bar" style="height:${s.v/maxSleep*65}px;background:${s.v>=7?'#2d7a4f':s.v>=6?'#e8a020':'#c2440e'};"></div><div class="chart-bar-label">${s.d}</div></div>`).join('')}</div>
+      <div style="display:flex;gap:14px;margin-top:8px;font-size:10px;font-weight:600;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#2d7a4f;"></span>7+ hrs</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#e8a020;"></span>6-7 hrs</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#c2440e;"></span>&lt;6 hrs</span>
+      </div>
+    </div>`;
+  }
+  html+='<div style="height:40px;"></div>';
+  c.innerHTML=html;
+}
+
+// ─── MOOD ───
+function renderMood(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  const moodEmoji=['','😩','😕','😐','🙂','🔥'];
+  const moodColors=['','#c2440e','#e8a020','#8a7e74','#2d7a4f','#e8a020'];
+  let moods=[];let total=0,count=0;
+  for(let d=1;d<dn;d++){const dd=getDayData(activePerson,d);if(dd.mood){moods.push({d,mood:dd.mood,complete:isDayComplete(dd)});total+=dd.mood;count++;}}
+  if(!meta.startDate||moods.length===0){c.innerHTML=`<div class="view-title" style="color:${color}">${name}'s Mood</div><div style="text-align:center;padding:50px 20px;color:var(--muted);"><div style="font-size:44px;margin-bottom:12px;">😊</div>No mood data yet. Log your mood daily in the tracker.</div>`;return;}
+  const avg=(total/count).toFixed(1);
+  const moodDist=[1,2,3,4,5].map(m=>({mood:m,count:moods.filter(d=>d.mood===m).length}));
+  let html=`<div class="view-title" style="color:${color}">${name}'s Mood & Energy</div><div class="view-sub">${count} days logged · avg ${avg}/5</div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+    <div class="stats-big-card" style="flex:1;min-width:100px;"><div class="sbc-icon">📊</div><div class="sbc-val" style="color:${color}">${avg}</div><div class="sbc-lbl">Avg Mood</div></div>
+    <div class="stats-big-card" style="flex:1;min-width:100px;"><div class="sbc-icon">${moodEmoji[Math.round(parseFloat(avg))]}</div><div class="sbc-val" style="font-size:32px;">${moodEmoji[Math.round(parseFloat(avg))]}</div><div class="sbc-lbl">Overall Vibe</div></div>
+  </div>
+  <div class="chart-section" style="margin-bottom:12px;"><div class="chart-title">Mood Over Time</div>
+    <div class="mood-timeline">${moods.map(m=>`<div class="mood-col"><div class="mood-bar" style="height:${m.mood/5*55}px;background:${moodColors[m.mood]};width:12px;border-radius:3px 3px 0 0;"></div><div class="mood-day-lbl">${m.d}</div></div>`).join('')}</div>
+  </div>
+  <div class="chart-section" style="margin-bottom:12px;"><div class="chart-title">Mood Distribution</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${moodDist.map(m=>`<div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:18px;width:24px;">${moodEmoji[m.mood]}</div>
+        <div style="flex:1;height:18px;background:var(--bg);border-radius:9px;overflow:hidden;"><div style="height:100%;width:${count>0?m.count/count*100:0}%;background:${moodColors[m.mood]};border-radius:9px;transition:width 0.6s ease;"></div></div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);width:30px;">${m.count}x</div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="chart-section"><div class="chart-title">Mood vs Performance</div>
+    ${[1,2,3,4,5].map(mood=>{
+      const days=moods.filter(d=>d.mood===mood);
+      const perfRate=days.length>0?Math.round(days.filter(d=>d.complete).length/days.length*100):0;
+      return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="font-size:16px;width:22px;">${moodEmoji[mood]}</div>
+        <div style="flex:1;height:12px;background:var(--bg);border-radius:6px;overflow:hidden;"><div style="height:100%;width:${perfRate}%;background:${moodColors[mood]};border-radius:6px;"></div></div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);width:50px;">${perfRate}% done</div>
+      </div>`;
+    }).join('')}
+    <div style="font-size:10px;color:var(--muted);margin-top:4px;">% of days with that mood where ALL 6 tasks were completed</div>
+  </div>`;
+  c.innerHTML=html+'<div style="height:40px;"></div>';
+}
+
+// ─── BADGES ───
+function renderBadges(c){
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  const earned=ALL_BADGES.filter(b=>checkBadge(activePerson,b.id));
+  const locked=ALL_BADGES.filter(b=>!checkBadge(activePerson,b.id));
+  let html=`<div class="view-title" style="color:${color}">${name}'s Badges</div><div class="view-sub">${earned.length}/${ALL_BADGES.length} earned</div>`;
+  if(earned.length){html+=`<div class="section-lbl" style="color:${color};">✨ EARNED (${earned.length})</div><div class="badges-showcase">${earned.map(b=>`<div class="badge-showcase-item earned"><div class="badge-emoji-lg">${b.emoji}</div><div class="badge-name-lg">${b.name}</div><div class="badge-desc-lg">${b.desc}</div><div class="badge-earned-mark">✓ EARNED</div></div>`).join('')}</div>`;}
+  html+=`<div class="section-lbl" style="margin-top:16px;">🔒 LOCKED (${locked.length})</div><div class="badges-showcase">${locked.map(b=>`<div class="badge-showcase-item locked"><div class="badge-emoji-lg">${b.emoji}</div><div class="badge-name-lg">${b.name}</div><div class="badge-desc-lg">${b.desc}</div></div>`).join('')}</div>`;
+  c.innerHTML=html+'<div style="height:40px;"></div>';
+}
+
+// ─── STATS ───
+function renderStats(c){
+  const meta=getMeta(activePerson);
+  const dn=getTodayDay(activePerson);
+  const name=activePerson==='taki'?'Taki':'Jessica';
+  const color=activePerson==='taki'?'#1a5f8a':'#c2440e';
+  let complete=0,water=0,pages=0,streak=0,s=0;
+  let dietD=0,wo1D=0,wo2D=0,photoD=0;
+  let waterArr=[],scoreArr=[],caloriesArr=[];
+  for(let d=1;d<dn;d++){
+    const dd=getDayData(activePerson,d);
+    if(isDayComplete(dd)){complete++;s++;streak=Math.max(streak,s);}else s=0;
+    water+=dd.water||0;pages+=dd.pages||0;
+    if(dd.diet)dietD++;if(dd.workout1)wo1D++;if(dd.workout2)wo2D++;if(dd.photo1)photoD++;
+    waterArr.push(dd.water||0);
+    scoreArr.push({d,score:[dd.diet,dd.workout1,dd.workout2,dd.water>=8,dd.pages>=10,!!dd.photo1].filter(Boolean).length});
+    if(dd.calories)caloriesArr.push({d,cal:parseFloat(dd.calories)});
+  }
+  const dL=dn-1;const pct=dL>0?Math.round(complete/dL*100):0;
+  const avgW=dL>0?(water/dL).toFixed(1):0;const avgP=dL>0?(pages/dL).toFixed(1):0;
+  const maxScore=6;
+  const otherPerson=activePerson==='taki'?'jessica':'taki';
+  const otherName=otherPerson==='taki'?'Taki':'Jessica';
+  const otherDn=getTodayDay(otherPerson);
+  let otherComplete=0,otherStreak=0,os=0,otherWater=0,otherPages=0;
+  for(let d=1;d<otherDn;d++){const dd=getDayData(otherPerson,d);if(isDayComplete(dd)){otherComplete++;os++;otherStreak=Math.max(otherStreak,os);}else os=0;otherWater+=dd.water||0;otherPages+=dd.pages||0;}
+  const maxD=Math.max(complete,otherComplete,1),maxS=Math.max(streak,otherStreak,1),maxW=Math.max(water,otherWater,1),maxPg=Math.max(pages,otherPages,1);
+
+  let html=`<div class="view-title" style="color:${color}">${name}'s Full Stats</div><div class="view-sub">Comprehensive breakdown</div>
+  <div class="stats-full">
+    <div class="stats-big-card"><div class="sbc-icon">🔥</div><div class="sbc-val" style="color:#e8a020">${streak}</div><div class="sbc-lbl">Best Streak</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">✅</div><div class="sbc-val" style="color:#2d7a4f">${complete}</div><div class="sbc-lbl">Perfect Days</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">📊</div><div class="sbc-val" style="color:${color}">${pct}%</div><div class="sbc-lbl">Completion</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">💧</div><div class="sbc-val" style="color:#1a5f8a">${avgW}</div><div class="sbc-lbl">Avg Cups</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">📖</div><div class="sbc-val" style="color:#3d3530">${avgP}</div><div class="sbc-lbl">Avg Pages</div></div>
+    <div class="stats-big-card"><div class="sbc-icon">🔄</div><div class="sbc-val" style="color:#c2440e">${meta.restarts||0}</div><div class="sbc-lbl">Restarts</div></div>
+  </div>
+  <div class="chart-section"><div class="chart-title">Task Completion Rates</div>
+    ${[{n:'🥗 Diet',v:dietD},{n:'💪 Workout 1',v:wo1D},{n:'🌤️ Workout 2',v:wo2D},{n:'💧 Water',v:waterArr.filter(w=>w>=8).length},{n:'📖 Reading',v:scoreArr.filter(s=>getDayData(activePerson,s.d).pages>=10).length},{n:'📸 Photos',v:photoD}].map(r=>{const p=dL>0?Math.round(r.v/dL*100):0;return `<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;font-weight:500;">${r.n}</span><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:${color};">${r.v}/${dL} · ${p}%</span></div><div style="height:7px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${p}%;background:${color};border-radius:4px;"></div></div></div>`;}).join('')}
+  </div>
+  <div class="chart-section"><div class="chart-title">Daily Score (0–6)</div>
+    <div class="chart-bars">${scoreArr.map(p=>{const col=p.score===6?'#2d7a4f':p.score>=4?'#e8a020':'#c2440e';return `<div class="chart-bar-col"><div class="chart-bar" style="height:${p.score/maxScore*65}px;background:${col};"></div><div class="chart-bar-label">${p.d}</div></div>`;}).join('')}</div>
+  </div>
+  <div class="chart-section"><div class="chart-title">Water Intake Per Day</div>
+    <div class="chart-bars">${waterArr.map((w,i)=>`<div class="chart-bar-col"><div class="chart-bar" style="height:${w/8*65}px;background:${w>=8?'#4cc9f0':'#1a5f8a50'};"></div><div class="chart-bar-label">${i+1}</div></div>`).join('')}</div>
+  </div>
+  ${caloriesArr.length>1?`<div class="chart-section"><div class="chart-title">Daily Calories</div>
+    <div class="chart-bars">${caloriesArr.map(c=>`<div class="chart-bar-col"><div class="chart-bar" style="height:${c.cal/Math.max(...caloriesArr.map(x=>x.cal))*65}px;background:${color};"></div><div class="chart-bar-label">${c.d}</div></div>`).join('')}</div>
+  </div>`:''}
+  <div class="chart-section"><div class="chart-title">⚔️ ${name} vs ${otherName}</div>
+    ${[{l:'Perfect Days',a:complete,b:otherComplete,max:maxD},{l:'Best Streak',a:streak,b:otherStreak,max:maxS},{l:'Total Cups',a:water,b:otherWater,max:maxW},{l:'Pages Read',a:pages,b:otherPages,max:maxPg}].map(r=>`<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">${r.l}</div>
+      <div class="compare-row-full"><div class="compare-name-lbl" style="color:${color}">${name}</div><div class="compare-track"><div class="compare-track-fill" style="width:${r.max>0?r.a/r.max*100:0}%;background:${color}"></div></div><div class="compare-track-val" style="color:${color}">${r.a}</div></div>
+      <div class="compare-row-full"><div class="compare-name-lbl" style="color:${activePerson==='taki'?'#c2440e':'#1a5f8a'}">${otherName}</div><div class="compare-track"><div class="compare-track-fill" style="width:${r.max>0?r.b/r.max*100:0}%;background:${activePerson==='taki'?'#c2440e':'#1a5f8a'}"></div></div><div class="compare-track-val" style="color:${activePerson==='taki'?'#c2440e':'#1a5f8a'}">${r.b}</div></div>
+    </div>`).join('')}
+  </div>`;
+  c.innerHTML=html+'<div style="height:40px;"></div>';
+}
+
+// ─── LIGHTBOX ───
+function openLightbox(src,caption){document.getElementById('lightboxImg').src=src;document.getElementById('lightboxCaption').textContent=caption;document.getElementById('lightbox').classList.remove('hidden');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.add('hidden');document.body.style.overflow='';}
+
+// ─── INIT ───
+initTheme();
+renderStatsBar();
+renderView();
+// Firebase loads AFTER UI renders — never blocks anything
+setTimeout(()=>initJournalFirebase(),100);
+</script>
+</body>
+</html>
